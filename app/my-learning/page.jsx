@@ -9,6 +9,7 @@ const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 function MyLearning() {
   const [courses, setCourses] = useState([]);
+  console.log(courses);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -22,57 +23,60 @@ function MyLearning() {
     fetchCourses();
   }, []);
 
- const getCoverPhotoUrl = (coverPhoto) => {
-    if (!coverPhoto) return '/placeholder.jpg'
-    if (typeof coverPhoto === 'string') {
-      return coverPhoto.startsWith('http')
+  const getCoverPhotoUrl = (coverPhoto) => {
+    if (!coverPhoto) return "/placeholder.jpg";
+    if (typeof coverPhoto === "string") {
+      return coverPhoto.startsWith("http")
         ? coverPhoto
-        : `${backendUrl}${coverPhoto}`
+        : `${backendUrl}${coverPhoto}`;
     }
-    if (typeof coverPhoto === 'object' && coverPhoto.src) {
-      return coverPhoto.src
+    if (typeof coverPhoto === "object" && coverPhoto.src) {
+      return coverPhoto.src;
     }
-    return '/placeholder.jpg'
-  }
+    return "/placeholder.jpg";
+  };
+
   return (
-    <>
     <div className="pt-24 pb-16 px-6 lg:px-24">
       <h2 className="text-2xl font-bold mb-8">My Learning</h2>
       {courses.length === 0 ? (
         <p className="text-gray-600">You haven't enrolled in any courses yet.</p>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {courses.map((course) => (
-            <Link
-              href={`/course/${course._id}`}
-              key={course._id}
-              className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col hover:shadow-xl transition-shadow"
-            >
-              <Image
-                src={getCoverPhotoUrl(course.coverPhoto)}
-                alt={course.title}
-                width={400}
-                height={300}
-                className="w-full h-48 object-cover"
-                loading="lazy"
-              />
-              <div className="p-4 flex flex-col flex-1">
-                <h3 className="text-lg font-semibold mb-1">{course.title}</h3>
-                <p className="text-sm text-gray-600 mb-2">
-                  {course.instructorId?.fullname}
-                </p>
-                <span className="text-sm font-medium text-yellow-500">
-                  {calculateAverageRating(course.ratings)
-                    ? `${calculateAverageRating(course.ratings)} ⭐️`
-                    : "—"}
-                </span>
-              </div>
-            </Link>
-          ))}
+          {courses.map((course) => {
+            const imageUrl = getCoverPhotoUrl(course.coverPhoto);
+            console.log("Cover photo URL:", imageUrl);
+            return (
+              <Link
+                href={`/course/${course._id}`}
+                key={course._id}
+                className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col hover:shadow-xl transition-shadow"
+              >
+                <Image
+                  src={imageUrl}
+                  alt={course.title}
+                  width={400}
+                  height={300}
+                  className="w-full h-48 object-cover"
+                  loading="lazy"
+                />
+                <div className="p-4 flex flex-col flex-1">
+                  <h3 className="text-lg font-semibold mb-1">{course.title}</h3>
+                  <p className="text-sm text-gray-600 mb-2">
+                    {course.instructorId?.fullname}
+                  </p>
+                  <span className="text-sm font-medium text-yellow-500">
+                    {calculateAverageRating(course.ratings)
+                      ? `${calculateAverageRating(course.ratings)} ⭐️`
+                      : "—"}
+                  </span>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       )}
     </div>
-    </>
   );
 }
 

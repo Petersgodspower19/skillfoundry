@@ -60,13 +60,24 @@ export default function Header() {
     <a
       onClick={() => {
         router.push(url);
-        toggleMenu();
       }}
       className="hover:text-gray-500 cursor-pointer transition-colors"
     >
       {label}
     </a>
   );
+
+  const mobileNavLink = (label, url) => (
+      <a
+      onClick={() => {
+        router.push(url);
+        toggleMenu();
+      }}
+      className="hover:text-gray-500 cursor-pointer transition-colors"
+    >
+      {label}
+    </a>
+  ) 
 
   return (
     <>
@@ -156,18 +167,18 @@ export default function Header() {
           </button>
         </div>
         <nav className="flex flex-col gap-4 px-4 pt-6">
-          {navLink("Home", "/")}
+          {mobileNavLink("Home", "/")}
           {hasToken ? (
             <>
-              {isStudent && navLink("Courses", "/courses")}
-            {isStudent && navLink("My-Learning", "/my-learning")}
-            {!isStudent && navLink("Create Course", "/add-course")}
-              {navLink("Profile", "/profile")}
+              {isStudent && mobileNavLink("Courses", "/courses")}
+            {isStudent && mobileNavLink("My-Learning", "/my-learning")}
+            {!isStudent && mobileNavLink("Create Course", "/add-course")}
+              {mobileNavLink("Profile", "/profile")}
             </>
           ) : (
             <>
-              {navLink("Login", "/login")}
-              {navLink("Register", "/register")}
+              {mobileNavLink("Login", "/login")}
+              {mobileNavLink("Register", "/register")}
             </>
           )}
         </nav>

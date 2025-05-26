@@ -5,14 +5,14 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { getAllCourses } from '@/app/_lib/api/course'
 import { getUser } from '@/app/_lib/api/user'
+import { useAuth } from '@/app/_lib/AuthContext'
 
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
 
 function BrowseCourses() {
   const [courses, setCourses] = useState([])
-  const [isAuthenticated, setIsAuthenticated] = useState(true)
-  const [isStudent, setIsStudent] = useState(true)
   const [user, setUser] = useState([])
+  const {isStudent, hasToken} = useAuth();
 
   const getCoverPhotoUrl = (coverPhoto) => {
     if (!coverPhoto) return '/placeholder.jpg'
@@ -27,12 +27,7 @@ function BrowseCourses() {
     return '/placeholder.jpg'
   }
 
-  useEffect(() => {
-    const token = localStorage.getItem('token')
-    if (!token) {
-      setIsAuthenticated(false)
-    }
-  }, [])
+ 
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -46,20 +41,7 @@ function BrowseCourses() {
     fetchCourses()
   }, [])
 
-  useEffect(() => {
-    const getDetails = async () => {
-      try {
-        const res = await getUser();
-        setUser(res);
-        if (user.role === 'teacher') {
-          setIsStudent(false)
-        }
-      } catch (error) {
-        console.error('Failed to fetch user:', error)
-      }
-    }
-    getDetails()
-  }, [])
+  
 
   
   if (!isStudent) return null
@@ -73,7 +55,7 @@ function BrowseCourses() {
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
         {courses.map((course) => (
           <Link
-            href={isAuthenticated ? `/course/${course._id}` : '/login'}
+            href={hasToken ? `/course/${course._id}` : '/login'}
             key={course._id}
             className='bg-white rounded-xl shadow-lg overflow-hidden flex flex-col'
           >

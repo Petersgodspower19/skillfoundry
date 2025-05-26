@@ -39,6 +39,7 @@ export async function markLessonAsWatched(courseId, lessonId) {
 
 export async function editLesson(courseId, lesssonId, data) {
    try {
+    const token = localStorage.getItem("token");
      if (!token) {
     console.warn("Token missing - user not logged in");
     return;
@@ -59,7 +60,8 @@ export async function editLesson(courseId, lesssonId, data) {
 
 export async function addLesson(courseId, data) {
     try {
-       if (!token) {
+      const token = localStorage.getItem("token");
+    if (!token) {
     console.warn("Token missing - user not logged in");
     return;
   }
@@ -78,12 +80,9 @@ export async function addLesson(courseId, data) {
 
 
 export async function getAllCourses() {
-  const token = localStorage.getItem("token");
-   try {
-     if (!token) {
-    console.warn("Token missing - user not logged in");
-    return;
-  }
+   try{
+    const res = await axios.get(`${backendUrl}/course/all`);
+    return res.data;
    } catch (error) {
     const errorMessage = error.response?.data?.message || 'Error while getting courses';
     console.error("Post error:", errorMessage);

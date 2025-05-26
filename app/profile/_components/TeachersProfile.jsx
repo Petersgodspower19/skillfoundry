@@ -32,6 +32,19 @@ function TeachersProfile({ fullname, bio, role, profilePic, backendUrl }) {
     : `${backendUrl}/${cleanPath}`;
 };
 
+const getCoverPhotoUrl = (coverPhoto) => {
+    if (!coverPhoto) return '/placeholder.jpg'
+    if (typeof coverPhoto === 'string') {
+      return coverPhoto.startsWith('http')
+        ? coverPhoto
+        : `${backendUrl}${coverPhoto}`
+    }
+    if (typeof coverPhoto === 'object' && coverPhoto.src) {
+      return coverPhoto.src
+    }
+    return '/placeholder.jpg'
+  }
+
   if(error){
     return (
     <div>
@@ -85,7 +98,7 @@ function TeachersProfile({ fullname, bio, role, profilePic, backendUrl }) {
       {courses.map((course) => (
         <Link href={`/edit-course/${course?._id}`} key={course._id} className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col">
       <Image
-        src={getProfilePhotoUrl(course.coverPhoto)}
+        src={getCoverPhotoUrl(course.coverPhoto)}
         alt="React Logo"
         width={400}
         height={300}

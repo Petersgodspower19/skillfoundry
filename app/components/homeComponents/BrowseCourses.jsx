@@ -21,6 +21,7 @@ function BrowseCourses() {
         ? coverPhoto
         : `${backendUrl}${coverPhoto}`
     }
+  
     if (typeof coverPhoto === 'object' && coverPhoto.src) {
       return coverPhoto.src
     }

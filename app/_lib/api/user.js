@@ -48,25 +48,21 @@ export async function getUserCreatedCourses() {
 }
 
 export async function getUserEnrolledCourses(){
-     try {
-       const token = localStorage.getItem("token");
-       if (!token) throw new Error("Token missing");
-       const decoded = jwtDecode(token);
-       const userId = decoded?.id; 
-       if (!userId) {
-        throw new Error("User ID is missing or invalid.");
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) return null;
+    const res = await axios.get(`${backendUrl}/user/enrolled`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-       const res = await axios.get(`${backendUrl}/user/enrolled`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-       });
-       return res.data; 
-    } catch (error) {
-        console.error("Error fetching user:", error);
+    });
+    return res.data; 
+  } catch (error) {
+    console.error("Error fetching enrolled courses:", error?.response?.data || error.message);
     return null;
-    }
+  }
 }
+
 
 export async function editUserDetails(userdata) {
      try {

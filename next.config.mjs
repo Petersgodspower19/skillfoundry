@@ -6,7 +6,7 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'skillfoundrybackend.onrender.com',
         pathname: '/uploads/**',
-      },
+      }
     ],
   },
 };

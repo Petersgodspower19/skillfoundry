@@ -26,7 +26,7 @@ function Profile() {
 
   return (
       <div>
-      {role === "student" ? <StudentsProfile 
+      {user.role === "student" ? <StudentsProfile 
      fullname={user?.fullname} bio={user?.role}
       profilePic={user?.profilePic}  /> : <TeachersProfile
      fullname={user?.fullname} bio={user?.bio} role={user?.role} 

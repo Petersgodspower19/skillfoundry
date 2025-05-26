@@ -10,16 +10,18 @@ function StudentsProfile({ fullname, bio, role, profilePic}) {
     const [courses, setCourses] = useState([]);
     const [error, setError] = useState("");
    useEffect(() => {
-       const fetchCourses = async () => {
-         try {
-           const res = await getUserEnrolledCourses();
-           setCourses(res || []);
-         } catch (error) {
-           console.error("Error fetching courses:", error);
-         }
-       };
-       fetchCourses();
-     }, []);
+  const fetchCourses = async () => {
+    const res = await getUserEnrolledCourses();
+    console.log(res);
+    if (res) {
+      setCourses(res);
+    } else {
+      setError("No enrolled courses or failed to fetch.");
+    }
+  };
+  fetchCourses();
+}, []);
+
    
 
     const getProfilePhotoUrl = (profilePhoto) => {

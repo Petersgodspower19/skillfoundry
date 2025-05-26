@@ -61,11 +61,10 @@ function Search({ searchText, onSelectResult }) {
       ) : results.length > 0 ? (
         <ul className="space-y-2">
           {results.map((course) => (
-  <Link href={`/course/${course._id}`} key={course._id}>
-    <a
+  <Link href={`/course/${course._id}`} key={course._id}
       onClick={onSelectResult}
-      className="flex items-start gap-4 p-2 hover:bg-gray-100 rounded-md cursor-pointer"
-    >
+      className="flex items-start gap-4 p-2 hover:bg-gray-100 rounded-md cursor-pointer">
+    
       <img
         src={getCoverPhotoUrl(course.coverPhoto)}
         alt={course.title}
@@ -82,7 +81,6 @@ function Search({ searchText, onSelectResult }) {
           <p className="text-xs text-gray-400">No ratings yet</p>
         )}
       </div>
-    </a>
   </Link>
 ))}
 

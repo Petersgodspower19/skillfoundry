@@ -6,8 +6,8 @@ import { getUserCreatedCourses } from '@/app/_lib/api/user';
 import { calculateAverageRating } from '@/app/_utils/serviceFunctions';
 
 
-
-function TeachersProfile({ fullname, bio, role, profilePic, backendUrl }) {
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
+function TeachersProfile({ fullname, bio, role, profilePic, }) {
    
   const [courses, setCourses] = useState([]);
   const [error, setError] = useState("");
@@ -32,6 +32,7 @@ function TeachersProfile({ fullname, bio, role, profilePic, backendUrl }) {
     : `${backendUrl}/${cleanPath}`;
 };
 
+
 const getCoverPhotoUrl = (coverPhoto) => {
     if (!coverPhoto) return '/placeholder.jpg'
     if (typeof coverPhoto === 'string') {
@@ -55,7 +56,7 @@ const getCoverPhotoUrl = (coverPhoto) => {
   return (
     <div className="relative bg-white min-h-screen">
           <section className="bg-[hsl(198,93%,95%)] pt-24 pb-16 px-6 lg:px-24">
-            <h2 className="text-black font-bold uppercase text-sm mb-2">Student</h2>
+            <h2 className="text-black font-bold uppercase text-sm mb-2">{role}</h2>
             <h1 className="text-black font-bold capitalize text-3xl sm:text-4xl">{fullname}</h1>
           </section>
     

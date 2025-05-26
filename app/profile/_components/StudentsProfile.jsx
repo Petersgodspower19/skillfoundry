@@ -4,23 +4,22 @@ import Image from 'next/image';
 import Link from "next/link";
 import { getUserEnrolledCourses } from '../../_lib/api/user';
 import { calculateAverageRating } from '@/app/_utils/serviceFunctions';
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
 
-function StudentsProfile({ fullname, bio, role, profilePic, backendUrl }) {
+function StudentsProfile({ fullname, bio, role, profilePic}) {
     const [courses, setCourses] = useState([]);
     const [error, setError] = useState("");
    useEffect(() => {
-     const fetchCourses = async () => {
-        try {
-          const res = await getUserEnrolledCourses();
-        console.log(res);
-        setCourses(res);
-        } catch (error) {
-          setError(error.message);
-        }
-     }
-     fetchCourses();
-   }, [])
-
+       const fetchCourses = async () => {
+         try {
+           const res = await getUserEnrolledCourses();
+           setCourses(res || []);
+         } catch (error) {
+           console.error("Error fetching courses:", error);
+         }
+       };
+       fetchCourses();
+     }, []);
    
 
     const getProfilePhotoUrl = (profilePhoto) => {
@@ -38,7 +37,7 @@ function StudentsProfile({ fullname, bio, role, profilePic, backendUrl }) {
   return (
     <div className="relative bg-white min-h-screen">
       <section className="bg-[hsl(198,93%,95%)] pt-24 pb-16 px-6 lg:px-24">
-        <h2 className="text-black font-bold uppercase text-sm mb-2">Student</h2>
+        <h2 className="text-black font-bold uppercase text-sm mb-2">{role}</h2>
         <h1 className="text-black font-bold capitalize text-3xl sm:text-4xl">{fullname}</h1>
       </section>
 

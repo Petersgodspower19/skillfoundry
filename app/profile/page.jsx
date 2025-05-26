@@ -4,6 +4,7 @@ import StudentsProfile from './_components/StudentsProfile'
 import { getUser } from '../_lib/api/user'
 import TeachersProfile from './_components/TeachersProfile';
 import Link from 'next/link';
+import { useAuth } from '../_lib/AuthContext';
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 function Profile() {
@@ -12,22 +13,9 @@ function Profile() {
     const [profilePic, setProfilePic] = useState("");
     const [bio, setBio] = useState("");
     const [error, setError] = useState("");
-    useEffect(() => {
-  async function getDetails() {
-    try {
-      const res = await getUser();
-    if (!res) return; 
-    setFullName(res.fullname);
-    setRole(res.role);
-    setProfilePic(res.profilePic);
-    setBio(res.bio);
-    } catch (error) {
-      setError(err.message);
-    }
-  }
+    const {user} = useAuth();
+    console.log(user);
 
-  getDetails();
-}, []);
    
    if(error){
      return <div className='pt-24 pb-16 px-6 lg:px-24'>
@@ -39,10 +27,10 @@ function Profile() {
   return (
       <div>
       {role === "student" ? <StudentsProfile 
-     fullname={fullname} bio={bio} role={role}
-      profilePic={profilePic} backendUrl={backendUrl} /> : <TeachersProfile
-     fullname={fullname} bio={bio} role={role} 
-     profilePic={profilePic} backendUrl={backendUrl} />}
+     fullname={user?.fullname} bio={user?.role}
+      profilePic={user?.profilePic}  /> : <TeachersProfile
+     fullname={user?.fullname} bio={user?.bio} role={user?.role} 
+     profilePic={user?.profilePic}  />}
     </div>
   )
 }

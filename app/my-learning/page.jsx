@@ -22,14 +22,18 @@ function MyLearning() {
     fetchCourses();
   }, []);
 
-  const getProfilePhotoUrl = (coverPhoto) => {
-    if (!coverPhoto) return "/placeholder.jpg";
-    const cleanPath = coverPhoto.replace(/\\/g, "/").replace(/^\/+/, "");
-    return coverPhoto.startsWith("http")
-      ? coverPhoto
-      : `${backendUrl}/${cleanPath}`;
-  };
-
+ const getCoverPhotoUrl = (coverPhoto) => {
+    if (!coverPhoto) return '/placeholder.jpg'
+    if (typeof coverPhoto === 'string') {
+      return coverPhoto.startsWith('http')
+        ? coverPhoto
+        : `${backendUrl}${coverPhoto}`
+    }
+    if (typeof coverPhoto === 'object' && coverPhoto.src) {
+      return coverPhoto.src
+    }
+    return '/placeholder.jpg'
+  }
   return (
     <>
     <div className="pt-24 pb-16 px-6 lg:px-24">
@@ -45,7 +49,7 @@ function MyLearning() {
               className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col hover:shadow-xl transition-shadow"
             >
               <Image
-                src={getProfilePhotoUrl(course.coverPhoto)}
+                src={getCoverPhotoUrl(course.coverPhoto)}
                 alt={course.title}
                 width={400}
                 height={300}

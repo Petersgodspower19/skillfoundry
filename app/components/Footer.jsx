@@ -60,7 +60,7 @@ window.dispatchEvent(new Event("token-change"));
               </li>
                <li>
                 <Link
-                  href="/"
+                  href="/profile"
                   className="text-gray-400 hover:text-themeBlue transition"
                 >
                   Profile

@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { IoIosNotifications } from "react-icons/io";
 import { CgProfile } from "react-icons/cg";
 import Link from 'next/link';
-import { getUser } from '../_lib/api/user';
+import { getUser, getUserNotifications } from '../_lib/api/user';
 import Search from './Search';
 import { useAuth } from '../_lib/AuthContext';
 
@@ -17,12 +17,24 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
+  const [notifications, setNotifications] = useState([]);
   const [user, setUser] = useState([]);
   const pathname = usePathname();
   const router = useRouter();
   const { hasToken, isStudent } = useAuth();
 
   
+   useEffect(() => {
+  async function fetchNotifs() {
+    if (!hasToken) return;
+    const res = await getUserNotifications();
+    setNotifications(res); 
+  }
+
+  fetchNotifs();
+}, [hasToken]); 
+
+const unreadCount = notifications.filter(notif => !notif.isRead).length;
 
 // useEffect(() => {
 //   const checkToken = () => {
@@ -128,7 +140,17 @@ export default function Header() {
     {isStudent && navLink("My-Learning", "/my-learning")}
     {!isStudent && navLink("Create Course", "/add-course")}
     <div className='flex items-center gap-2'>
-      <Link href="/notifications"><IoIosNotifications  className='text-2xl'/></Link>
+     <div className="relative">
+  <Link href="/notifications">
+    <IoIosNotifications className="text-2xl" />
+    {unreadCount > 0 && (
+      <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full px-1.5">
+        {unreadCount}
+      </span>
+    )}
+  </Link>
+</div>
+
       <Link href="/profile"><CgProfile className='text-2xl'/></Link>
     </div>
   </>
@@ -148,7 +170,17 @@ export default function Header() {
               <button onClick={toggleSearch}><HiX className="text-2xl cursor-pointer" /></button>
             ) : (
              <div className='flex items-center gap-2'>
-              <Link href="/notifications"><IoIosNotifications className='md:hidden text-2xl' /></Link>
+              <div className="relative md:hidden">
+          <Link href="/notifications">
+            <IoIosNotifications className="text-2xl" />
+            {unreadCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full px-1.5">
+                {unreadCount}
+              </span>
+            )}
+          </Link>
+        </div>
+
                {isStudent && <button onClick={toggleSearch}>
                <FiSearch className="text-xl cursor-pointer" />
                </button>}

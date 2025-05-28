@@ -23,6 +23,10 @@ function StudentsProfile({ fullname, bio, role, profilePic}) {
 }, []);
 
    
+    const getCoverPhotoUrl = (coverPhoto) => {
+    if (!coverPhoto) return "/placeholder.jpg";
+    return coverPhoto.startsWith("http") ? coverPhoto : `${backendUrl}${coverPhoto}`;
+  };
 
     const getProfilePhotoUrl = (profilePhoto) => {
   if (!profilePhoto) return "/placeholder.jpg";
@@ -84,7 +88,7 @@ function StudentsProfile({ fullname, bio, role, profilePic}) {
           {courses.map((course) => (
              <Link href={`/course/${course._id}`} key={course._id} className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col">
             <Image
-              src={getProfilePhotoUrl(course.coverPhoto)}
+              src={getCoverPhotoUrl(course.coverPhoto)}
               alt="React Logo"
               width={400}
               height={300}

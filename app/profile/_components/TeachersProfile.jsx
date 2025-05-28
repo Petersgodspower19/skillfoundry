@@ -34,18 +34,10 @@ function TeachersProfile({ fullname, bio, role, profilePic, }) {
 
 
 const getCoverPhotoUrl = (coverPhoto) => {
-    if (!coverPhoto) return '/placeholder.jpg'
-    if (typeof coverPhoto === 'string') {
-      return coverPhoto.startsWith('http')
-        ? coverPhoto
-        : `${backendUrl}${coverPhoto}`
-    }
-    if (typeof coverPhoto === 'object' && coverPhoto.src) {
-      return coverPhoto.src
-    }
-    return '/placeholder.jpg'
-  }
-
+    if (!coverPhoto) return "/placeholder.jpg";
+    return coverPhoto.startsWith("http") ? coverPhoto : `${backendUrl}${coverPhoto}`;
+  };
+  
   if(error){
     return (
     <div>

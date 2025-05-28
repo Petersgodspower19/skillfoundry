@@ -25,17 +25,10 @@ function MyLearning() {
 
   const getCoverPhotoUrl = (coverPhoto) => {
     if (!coverPhoto) return "/placeholder.jpg";
-    if (typeof coverPhoto === "string") {
-      return coverPhoto.startsWith("http")
-        ? coverPhoto
-        : `${backendUrl}${coverPhoto}`;
-    }
-    if (typeof coverPhoto === "object" && coverPhoto.src) {
-      return coverPhoto.src;
-    }
-    return "/placeholder.jpg";
+    return coverPhoto.startsWith("http") ? coverPhoto : `${backendUrl}${coverPhoto}`;
   };
 
+  
   return (
     <div className="pt-24 pb-16 px-6 lg:px-24">
       <h2 className="text-2xl font-bold mb-8">My Learning</h2>
